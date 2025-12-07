@@ -1,0 +1,10 @@
+services:
+  fcm-worker:
+    build: "./"
+    container_name: fcm-worker
+    restart: always
+    env_file:
+      - ./.env
+    volumes:
+      - .:/app
+    command: ["npm", "run", "start"]
