@@ -3,6 +3,8 @@ services:
     build: "./"
     container_name: fcm-worker
     restart: always
+    environment:
+      - NODE_ENV=production
     env_file:
       - ./.env
     volumes:

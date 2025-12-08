@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon",
-    "start": "babel-node src/init.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon --exec babel-node src/init.js",
+    "build": "babel src -d dist",
+    "start": "node dist/init.js"
   },
   "author": "",
   "license": "ISC",
