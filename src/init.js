@@ -11,8 +11,6 @@ const onRunning = async () => {
     created_at TEXT DEFAULT CURRENT_TIMESTAMP 
     )
   `);
-
-  writeConcert("CONCERT", "3000");
 };
 
 app.listen(8000, onRunning);

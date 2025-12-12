@@ -1,46 +1,35 @@
 import { db } from "../db/sqlite";
 
-export const writeConcert = (title, price) => {
+export const writeConcert = (request, response) => {
+  const { title, price } = request?.body;
   const stmt = db.prepare("INSERT INTO concerts (title, price) VALUES (?, ?)");
   const result = stmt.run(title, price);
-  console.log("result", result);
-  return { id: result.lastInsertRowid, title, price };
+  return response
+    .status(200)
+    .send({ id: result.lastInsertRowid, title, price });
 };
 
-// // controller.js
-// import db from "./db/sqlite.js";
+export const getConcert = (request, response) => {
+  const { id } = request.body;
+  const stmt = db.prepare("SELECT * FROM users WHERE id = ?");
+  return response.status(200).send(stmt.get(id));
+};
 
-// // CREATE
-// export function createUser(name, age) {
-//   const stmt = db.prepare("INSERT INTO users (name, age) VALUES (?, ?)");
-//   const result = stmt.run(name, age);
-//   return { id: result.lastInsertRowid, name, age };
-// }
+export const getConcerts = (request, response) => {
+  const stmt = db.prepare("SELECT * FROM concerts");
+  return response.status(200).send(stmt.all());
+};
 
-// // READ (one)
-// export function getUser(id) {
-//   const stmt = db.prepare("SELECT * FROM users WHERE id = ?");
-//   return stmt.get(id); // 없으면 undefined 반환
-// }
+export const updateConcert = (request, response) => {
+  const { id, title, price } = request.body;
+  const stmt = db.prepare("UPDATE concerts SET name = ?, age = ? WHERE id = ?");
+  stmt.run(id, title, price);
+  return response.status(200).send(getUser(id));
+};
 
-// // READ (all)
-// export function getAllUsers() {
-//   const stmt = db.prepare("SELECT * FROM users");
-//   return stmt.all();
-// }
-
-// // UPDATE
-// export function updateUser(id, name, age) {
-//   const stmt = db.prepare("UPDATE users SET name = ?, age = ? WHERE id = ?");
-//   stmt.run(name, age, id);
-
-//   return getUser(id); // 수정된 데이터 반환
-// }
-
-// // DELETE
-// export function deleteUser(id) {
-//   const stmt = db.prepare("DELETE FROM users WHERE id = ?");
-//   stmt.run(id);
-
-//   return { success: true };
-// }
+export const deleteConcert = (request, response) => {
+  const { id } = request.body;
+  const stmt = db.prepare("DELETE FROM concerts WHERE id = ?");
+  stmt.run(id);
+  return response.status(200).send({ success: true });
+};
